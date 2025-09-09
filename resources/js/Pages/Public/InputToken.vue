@@ -34,17 +34,17 @@ const submit = () => {
                     class="h-16 w-16 sm:h-12 sm:w-12 object-contain rounded-full shadow-md"
                 />
                 <h1 class="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-emerald-400 bg-clip-text text-transparent tracking-tight">
-                    🗳️ E-Voting
+                    E-Voting
+                </h1>
+                <h1 class="text-3xl font-extrabold bg-gradient-to-r from-green-700 to-emerald-400 bg-clip-text text-transparent tracking-tight">
+                    MAN 1 PATI
                 </h1>
             </div>
 
-            <h2 class="text-lg font-semibold text-gray-700 mb-6">
-                {{ sekolah?.nama ?? 'MAN 1 PATI' }}
-            </h2>
 
             <!-- Deskripsi -->
             <p class="text-gray-600 mb-6 leading-relaxed">
-                Masukkan <span class="font-semibold text-green-700">token</span> yang Anda miliki untuk memulai pemilihan Ketua OSIM
+                Masukkan <span class="font-semibold text-green-700">token</span> yang Anda miliki untuk memulai pemilihan Ketua OSIM dan Wakil Ketua OSIM.
             </p>
 
             <!-- Status & Error -->

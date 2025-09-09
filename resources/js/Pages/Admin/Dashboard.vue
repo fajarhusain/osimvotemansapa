@@ -87,66 +87,67 @@ watch([animatedSudah, animatedBelum], () => {
 
     <!-- Statistik Utama -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-      <!-- Jumlah Pemilih -->
+  <!-- Jumlah Pemilih -->
+  <div
+    class="relative group p-6 rounded-3xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+  >
+    <div
+      class="absolute -top-6 -right-6 w-24 h-24 bg-green-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
+    ></div>
+    <div class="flex flex-col items-center text-center relative z-10">
       <div
-        class="relative group p-6 rounded-3xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+        class="w-14 h-14 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-2xl shadow mb-3"
       >
-        <div
-          class="absolute -top-6 -right-6 w-24 h-24 bg-green-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-        ></div>
-        <div class="flex flex-col items-center text-center relative z-10">
-          <div
-            class="w-14 h-14 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-2xl shadow mb-3"
-          >
-            <i class="fas fa-users"></i>
-          </div>
-          <span class="text-gray-600 text-lg font-medium">Jumlah Pemilih</span>
-          <div class="text-5xl font-extrabold text-gray-800 mt-2">
-            {{ animatedJumlah }}
-          </div>
-        </div>
+        <i class="fas fa-users"></i>
       </div>
-
-      <!-- Sudah Memilih -->
-      <div
-        class="relative group p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
-      >
-        <div
-          class="absolute -top-6 -right-6 w-24 h-24 bg-emerald-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-        ></div>
-        <div class="flex flex-col items-center text-center relative z-10">
-          <div
-            class="w-14 h-14 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-2xl shadow mb-3"
-          >
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <span class="text-gray-600 text-lg font-medium">Sudah Memilih</span>
-          <div class="text-5xl font-extrabold text-emerald-600 mt-2">
-            {{ animatedSudah }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Belum Memilih -->
-      <div
-        class="relative group p-6 rounded-3xl bg-gradient-to-br from-red-50 to-red-100 border border-red-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
-      >
-        <div
-          class="absolute -top-6 -right-6 w-24 h-24 bg-red-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-        ></div>
-        <div class="flex flex-col items-center text-center relative z-10">
-          <div
-            class="w-14 h-14 flex items-center justify-center rounded-full bg-red-100 text-red-600 text-2xl shadow mb-3"
-          >
-            <i class="fas fa-times-circle"></i>
-          </div>
-          <span class="text-gray-600 text-lg font-medium">Belum Memilih</span>
-          <div class="text-5xl font-extrabold text-red-600 mt-2">
-            {{ animatedBelum }}
-          </div>
-        </div>
+      <span class="text-gray-600 text-lg font-medium">Jumlah Pemilih</span>
+      <div class="text-5xl font-extrabold text-gray-800 mt-2">
+        {{ animatedJumlah }}
       </div>
     </div>
+  </div>
+
+  <!-- Sudah Memilih -->
+  <div
+    class="relative group p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+  >
+    <div
+      class="absolute -top-6 -right-6 w-24 h-24 bg-emerald-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
+    ></div>
+    <div class="flex flex-col items-center text-center relative z-10">
+      <div
+        class="w-14 h-14 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-2xl shadow mb-3"
+      >
+        <i class="fas fa-vote-yea"></i>
+      </div>
+      <span class="text-gray-600 text-lg font-medium">Sudah Memilih</span>
+      <div class="text-5xl font-extrabold text-emerald-600 mt-2">
+        {{ animatedSudah }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Belum Memilih -->
+  <div
+    class="relative group p-6 rounded-3xl bg-gradient-to-br from-red-50 to-red-100 border border-red-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
+  >
+    <div
+      class="absolute -top-6 -right-6 w-24 h-24 bg-red-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
+    ></div>
+    <div class="flex flex-col items-center text-center relative z-10">
+      <div
+        class="w-14 h-14 flex items-center justify-center rounded-full bg-red-100 text-red-600 text-2xl shadow mb-3"
+      >
+        <i class="fas fa-user-clock"></i>
+      </div>
+      <span class="text-gray-600 text-lg font-medium">Belum Memilih</span>
+      <div class="text-5xl font-extrabold text-red-600 mt-2">
+        {{ animatedBelum }}
+      </div>
+    </div>
+  </div>
+</div>
+
 
     <!-- Widget Tambahan -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -78,14 +78,14 @@ const page = usePage()
         </Link>
 
         <!-- Pengaturan Pemilihan -->
-<Link
+<!-- <Link
   :href="route('election.index')"
   class="flex items-center px-4 py-2 rounded-md mx-2 transition hover:bg-green-600/50"
   :class="{ 'bg-green-600': route().current('election.index') }"
 >
   <AdjustmentsHorizontalIcon class="h-5 w-5" />
   <span v-if="sidebarOpen" class="ml-3">Pengaturan Pemilihan</span>
-</Link>
+</Link> -->
 
 
         <!-- Data Pemilih -->
@@ -126,16 +126,6 @@ const page = usePage()
         </Link>
 
         
-
-<!-- Pengaturan Pemilihan -->
-<Link
-  :href="route('election.index')"
-  class="flex items-center px-4 py-2 rounded-md mx-2 transition hover:bg-green-600/50"
-  :class="{ 'bg-green-600': route().current('election.index') }"
->
-  <AdjustmentsHorizontalIcon class="h-5 w-5" />
-  <span v-if="sidebarOpen" class="ml-3">Pengaturan Pemilihan</span>
-</Link>
 
 
         <!-- Hasil Suara -->

@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Kandidat;
 use App\Models\Suara;
 use App\Models\Pemilih;
-use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 class HasilSuaraController extends Controller
@@ -15,9 +14,9 @@ class HasilSuaraController extends Controller
         // Hitung total suara yang masuk
         $totalSuara = Suara::count();
 
-        // Ambil data kandidat dan hitung jumlah suara untuk setiap kandidat
+        // Ambil data kandidat sesuai urutan input di database
         $hasilSuara = Kandidat::withCount('suara')
-            ->orderByDesc('suara_count')
+            ->orderBy('id', 'asc') // <-- urut sesuai input database
             ->get();
 
         // Ambil data pemilih untuk ringkasan

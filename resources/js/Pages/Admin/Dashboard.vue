@@ -12,16 +12,9 @@ const props = defineProps({
 })
 
 // State reactive
-const animatedJumlah = ref(props.jumlahPemilih)
-const animatedSudah = ref(props.sudahMemilih)
-const animatedBelum = ref(props.belumMemilih)
-
-// Update props ketika reload
-function updateData(newProps) {
-  animatedJumlah.value = newProps.jumlahPemilih
-  animatedSudah.value = newProps.sudahMemilih
-  animatedBelum.value = newProps.belumMemilih
-}
+const jumlahPemilih = ref(props.jumlahPemilih)
+const sudahMemilih = ref(props.sudahMemilih)
+const belumMemilih = ref(props.belumMemilih)
 
 // Chart instance
 let chartInstance = null
@@ -34,7 +27,7 @@ onMounted(() => {
       labels: ['Sudah Memilih', 'Belum Memilih'],
       datasets: [
         {
-          data: [animatedSudah.value, animatedBelum.value],
+          data: [sudahMemilih.value, belumMemilih.value],
           backgroundColor: ['#10B981', '#EF4444'],
         },
       ],
@@ -42,33 +35,54 @@ onMounted(() => {
     options: {
       responsive: true,
       plugins: {
-        legend: {
-          position: 'bottom',
-        },
+        legend: { position: 'bottom' },
       },
     },
   })
 
-  // Polling tiap 5 detik
-  setInterval(() => {
-    router.reload({
+  setInterval(async () => {
+    await router.reload({
       only: ['jumlahPemilih', 'sudahMemilih', 'belumMemilih'],
+      preserveState: true,
       onSuccess: (page) => {
-        updateData(page.props)
+        jumlahPemilih.value = page.props.jumlahPemilih
+        sudahMemilih.value = page.props.sudahMemilih
+        belumMemilih.value = page.props.belumMemilih
       },
     })
   }, 5000)
 })
 
-// Update chart setiap data berubah
-watch([animatedSudah, animatedBelum], () => {
+watch([sudahMemilih, belumMemilih], () => {
   if (chartInstance) {
-    chartInstance.data.datasets[0].data = [
-      animatedSudah.value,
-      animatedBelum.value,
-    ]
+    chartInstance.data.datasets[0].data = [sudahMemilih.value, belumMemilih.value]
     chartInstance.update()
   }
+})
+
+// Countdown Timer
+const endTime = new Date("2025-09-10T17:00:00").getTime()
+const remainingTime = ref("")
+
+function updateCountdown() {
+  const now = new Date().getTime()
+  const distance = endTime - now
+
+  if (distance <= 0) {
+    remainingTime.value = "⏳ Pemilihan sudah ditutup!"
+    return
+  }
+
+  const hours = Math.floor(distance / (1000 * 60 * 60))
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000)
+
+  remainingTime.value = `${hours}h ${minutes}m ${seconds}s`
+}
+
+onMounted(() => {
+  updateCountdown()
+  setInterval(updateCountdown, 1000)
 })
 </script>
 
@@ -76,112 +90,70 @@ watch([animatedSudah, animatedBelum], () => {
   <AuthenticatedLayout>
     <Head title="Dashboard" />
 
-    <div class="mb-10 text-center">
-      <h1
-        class="text-4xl md:text-5xl font-extrabold mb-2 text-gray-800 tracking-tight"
-      >
-        📊 Dashboard EVOTE <span class="text-green-600">MANSAPA</span>
-      </h1>
-      <p class="text-gray-500">Pantau statistik pemilihan secara real-time</p>
-    </div>
+    <div class="flex flex-col min-h-screen">
 
-    <!-- Statistik Utama -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-  <!-- Jumlah Pemilih -->
-  <div
-    class="relative group p-6 rounded-3xl bg-gradient-to-br from-green-50 to-green-100 border border-green-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
-  >
-    <div
-      class="absolute -top-6 -right-6 w-24 h-24 bg-green-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-    ></div>
-    <div class="flex flex-col items-center text-center relative z-10">
-      <div
-        class="w-14 h-14 flex items-center justify-center rounded-full bg-green-100 text-green-600 text-2xl shadow mb-3"
-      >
-        <i class="fas fa-users"></i>
-      </div>
-      <span class="text-gray-600 text-lg font-medium">Jumlah Pemilih</span>
-      <div class="text-5xl font-extrabold text-gray-800 mt-2">
-        {{ animatedJumlah }}
-      </div>
-    </div>
-  </div>
+      <!-- Konten utama fleksibel -->
+      <main class="flex-1 px-4 py-2 flex flex-col items-center justify-center">
 
-  <!-- Sudah Memilih -->
-  <div
-    class="relative group p-6 rounded-3xl bg-gradient-to-br from-emerald-50 to-emerald-100 border border-emerald-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
-  >
-    <div
-      class="absolute -top-6 -right-6 w-24 h-24 bg-emerald-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-    ></div>
-    <div class="flex flex-col items-center text-center relative z-10">
-      <div
-        class="w-14 h-14 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-2xl shadow mb-3"
-      >
-        <i class="fas fa-vote-yea"></i>
-      </div>
-      <span class="text-gray-600 text-lg font-medium">Sudah Memilih</span>
-      <div class="text-5xl font-extrabold text-emerald-600 mt-2">
-        {{ animatedSudah }}
-      </div>
-    </div>
-  </div>
+        <!-- Header -->
+        <div class="flex flex-col items-center space-y-1 mb-4">
+          <img src="/images/logomansapa.png" alt="Logo MAN 1 Pati" class="h-16 w-16 rounded-full shadow-md"/>
+          <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-green-700 to-emerald-400 bg-clip-text text-transparent text-center">
+            E-Voting
+          </h1>
+          <h1 class="text-2xl md:text-3xl font-extrabold bg-gradient-to-r from-green-700 to-emerald-400 bg-clip-text text-transparent text-center">
+            MAN 1 PATI
+          </h1>
+          <p class="text-gray-500 text-xs md:text-sm mt-1">Pantau statistik pemilihan real-time</p>
+        </div>
 
-  <!-- Belum Memilih -->
-  <div
-    class="relative group p-6 rounded-3xl bg-gradient-to-br from-red-50 to-red-100 border border-red-200 shadow-lg hover:shadow-2xl transition transform hover:-translate-y-1 hover:scale-105 overflow-hidden"
-  >
-    <div
-      class="absolute -top-6 -right-6 w-24 h-24 bg-red-200 opacity-20 rounded-full blur-2xl group-hover:opacity-30 transition"
-    ></div>
-    <div class="flex flex-col items-center text-center relative z-10">
-      <div
-        class="w-14 h-14 flex items-center justify-center rounded-full bg-red-100 text-red-600 text-2xl shadow mb-3"
-      >
-        <i class="fas fa-user-clock"></i>
-      </div>
-      <span class="text-gray-600 text-lg font-medium">Belum Memilih</span>
-      <div class="text-5xl font-extrabold text-red-600 mt-2">
-        {{ animatedBelum }}
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    <!-- Widget Tambahan -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- Progress Partisipasi -->
-      <div class="p-6 bg-white rounded-3xl shadow hover:shadow-xl transition">
-        <h2 class="text-lg font-bold text-gray-800 mb-4">
-          Progress Partisipasi
-        </h2>
-        <div class="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
-          <div
-            class="bg-green-500 h-6 text-xs font-medium text-white text-center p-0.5 leading-none"
-            :style="{ width: (animatedSudah / animatedJumlah * 100) + '%' }"
-          >
-            {{ ((animatedSudah / animatedJumlah) * 100).toFixed(1) }}%
+        <!-- Statistik Ringkas -->
+        <div class="flex justify-center gap-3 mb-4 w-full max-w-4xl">
+          <div class="flex-1 px-3 py-2 rounded-xl shadow bg-gradient-to-br from-green-50 to-green-100 flex flex-col items-center text-xs md:text-sm">
+            <i class="fas fa-users text-green-600 text-2xl md:text-3xl mb-1"></i>
+            <h2 class="font-semibold text-green-700">Jumlah Pemilih</h2>
+            <p class="text-4xl md:text-5xl font-extrabold text-green-700 mt-1">{{ jumlahPemilih }}</p>
+          </div>
+          <div class="flex-1 px-3 py-2 rounded-xl shadow bg-gradient-to-br from-emerald-50 to-emerald-100 flex flex-col items-center text-xs md:text-sm">
+            <i class="fas fa-vote-yea text-emerald-600 text-2xl md:text-3xl mb-1"></i>
+            <h2 class="font-semibold text-emerald-700">Sudah Memilih</h2>
+            <p class="text-4xl md:text-5xl font-extrabold text-emerald-700 mt-1">{{ sudahMemilih }}</p>
+          </div>
+          <div class="flex-1 px-3 py-2 rounded-xl shadow bg-gradient-to-br from-red-50 to-red-100 flex flex-col items-center text-xs md:text-sm">
+            <i class="fas fa-user-clock text-red-600 text-2xl md:text-3xl mb-1"></i>
+            <h2 class="font-semibold text-red-700">Belum Memilih</h2>
+            <p class="text-4xl md:text-5xl font-extrabold text-red-700 mt-1">{{ belumMemilih }}</p>
           </div>
         </div>
-      </div>
 
-      <!-- Pie Chart -->
-      <div class="p-6 bg-white rounded-3xl shadow hover:shadow-xl transition">
-        <h2 class="text-lg font-bold text-gray-800 mb-4">Distribusi Suara</h2>
-        <canvas id="voteChart"></canvas>
-      </div>
-    </div>
+        <!-- Distribusi Suara -->
+        <div class="p-2 bg-white rounded-3xl shadow flex flex-col justify-center items-center w-full max-w-2xl mb-4">
+          <h2 class="text-sm md:text-base font-bold text-gray-800 mb-1">Distribusi Suara</h2>
+          <canvas id="voteChart" class="w-full max-h-36"></canvas>
+        </div>
 
-    <!-- Info Box -->
-    <div
-      class="mt-10 p-6 bg-gradient-to-r from-indigo-50 to-indigo-100 border border-indigo-200 rounded-3xl shadow text-center"
-    >
-      <h2 class="text-xl font-bold text-indigo-700 mb-2">⏳ Waktu Pemilihan</h2>
-      <p class="text-gray-700">
-        Pemilihan akan ditutup pada
-        <span class="font-semibold">10 September 2025, 17:00 WIB</span>
-      </p>
+        <!-- Progress Partisipasi -->
+        <div class="w-full max-w-2xl mb-4">
+          <div class="flex items-center justify-between mb-1 text-xs md:text-sm">
+            <h2 class="font-semibold text-gray-700">Progress Partisipasi</h2>
+            <span class="font-bold text-green-600">
+              {{ ((sudahMemilih / jumlahPemilih) * 100).toFixed(1) }}%
+            </span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2 md:h-3 overflow-hidden">
+            <div class="bg-green-500 h-2 md:h-3 transition-all duration-500"
+              :style="{ width: (sudahMemilih / jumlahPemilih * 100) + '%' }"></div>
+          </div>
+        </div>
+
+      </main>
+
+      <!-- Footer floating di bawah -->
+      <footer class="fixed bottom-0 left-0 w-full bg-gray-100 bg-opacity-90 text-center py-2 text-xs md:text-sm shadow-md border-t border-gray-300">
+        <p>&copy; 2025 PATITECH SOLUTION. All rights reserved.</p>
+      </footer>
+
     </div>
   </AuthenticatedLayout>
 </template>
+

@@ -12,6 +12,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HasilSuaraController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\ElectionController;
+
+
 
 // admin login/logout
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
@@ -36,6 +39,11 @@ Route::middleware('auth:admin')->group(function () {
 
     // kandidat
     Route::resource('/admin/kandidat', KandidatController::class)->except(['show']);
+
+    //ELECTION
+    Route::get('/admin/election', [ElectionController::class, 'index'])->name('election.index');
+    Route::post('/admin/election', [ElectionController::class, 'store'])->name('election.store');
+
 
     // pemilih
     Route::get('/admin/pemilih/import', [PemilihController::class, 'importForm'])->name('pemilih.import.form');

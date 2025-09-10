@@ -77,6 +77,17 @@ const page = usePage()
           <span v-if="sidebarOpen" class="ml-3">Identitas Sekolah</span>
         </Link>
 
+        <!-- Pengaturan Pemilihan -->
+<Link
+  :href="route('election.index')"
+  class="flex items-center px-4 py-2 rounded-md mx-2 transition hover:bg-green-600/50"
+  :class="{ 'bg-green-600': route().current('election.index') }"
+>
+  <AdjustmentsHorizontalIcon class="h-5 w-5" />
+  <span v-if="sidebarOpen" class="ml-3">Pengaturan Pemilihan</span>
+</Link>
+
+
         <!-- Data Pemilih -->
         <button
           @click="pemilihOpen = !pemilihOpen"
@@ -113,6 +124,19 @@ const page = usePage()
           <UserGroupIcon class="h-5 w-5" />
           <span v-if="sidebarOpen" class="ml-3">Data Kandidat</span>
         </Link>
+
+        
+
+<!-- Pengaturan Pemilihan -->
+<Link
+  :href="route('election.index')"
+  class="flex items-center px-4 py-2 rounded-md mx-2 transition hover:bg-green-600/50"
+  :class="{ 'bg-green-600': route().current('election.index') }"
+>
+  <AdjustmentsHorizontalIcon class="h-5 w-5" />
+  <span v-if="sidebarOpen" class="ml-3">Pengaturan Pemilihan</span>
+</Link>
+
 
         <!-- Hasil Suara -->
         <button
